@@ -24,12 +24,19 @@ app.use(bodyParser.json());
 
 // Criando rotas
 app
-  .get("/crud", (req, res) => {
-    res.render("formulario");
-  })
 
   .get("/", (req, res) => {
-    res.render("home");
+    Post.findAll()
+      .then((posts) => {
+        res.render("home", { posts: posts });
+      })
+      .catch((err) => {
+        res.send("Erro ao listar os posts: " + err);
+      });
+  })
+
+  .get("/crud", (req, res) => {
+    res.render("formulario");
   })
 
   .post("/response", (req, res) => {
@@ -38,7 +45,8 @@ app
       conteudo: req.body.firstimpression,
     })
       .then(() => {
-        res.send("Post criado com sucesso!");
+        // Irá redirecionar para a página inicial com as primeiras impressões
+        res.redirect("/");
       })
       .catch((err) => {
         res.send("Erro ao criar o post: " + err);

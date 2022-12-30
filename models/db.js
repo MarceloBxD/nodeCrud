@@ -5,6 +5,7 @@ const Sequelize = require("sequelize");
 const sequelize = new Sequelize("firstimpressions", "root", "Br@cet051528", {
   host: "localhost",
   dialect: "mysql",
+  query: { raw: true },
 });
 
 module.exports = {
