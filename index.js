@@ -26,7 +26,7 @@ app.use(bodyParser.json());
 app
 
   .get("/", (req, res) => {
-    Post.findAll()
+    Post.findAll({ order: [["id", "DESC"]] })
       .then((posts) => {
         res.render("home", { posts: posts });
       })
@@ -37,6 +37,16 @@ app
 
   .get("/crud", (req, res) => {
     res.render("formulario");
+  })
+
+  .get("/delete/:id", (req, res) => {
+    Post.destroy({ where: { id: req.params.id } })
+      .then(() => {
+        res.end("Postagem deletada com sucesso!");
+      })
+      .catch((err) => {
+        res.send("Erro ao deletar o post: " + err);
+      });
   })
 
   .post("/response", (req, res) => {
